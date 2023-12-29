@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,500;1,600&display=swap" rel="stylesheet">
+    <title>Catalogo de filmes</title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: Poppins;
+    }
+    .catalogo {
+        background: linear-gradient(rgba(0, 0, 0, 0.676) 50%,rgba(255, 0, 0, 0.755) 50%);
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+    .div_separar {
+        padding: 8rem 6rem 8rem 6rem; 
+        background-color: black;
+        border-radius: 10px;
+        width: 20%;
+        height: 20%;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        transition: 1s all;
+        flex-direction: column;
+    }
+    .div_separar h2 {
+        font-weight: 700;
+    }
+    .div_separar button {
+        padding: 4px;
+        background-color: black;
+        border: 1px solid white;
+        width: 75%;
+        margin: 2% 0 0 0;
+        color: white;
+        cursor: pointer;
+    }
+    .div_separar button:hover {
+        color: black;
+        border: 1px solid black;
+        background-color: white;
+        transition: 0.8s all;
+    }
+    #input_catalogo {
+        padding: 2px;
+        width: 100%;
+        border-radius: 20px;
+        text-align: center;
+    }
+    #input_catalogo:focus {
+        outline: 0;
+    }
+    .div_principal_catalogo {
+        width: 70%;
+        height: 70%;
+        padding: 2%;
+        display: none;
+        flex-direction: column;
+        background-color: rgba(58, 58, 58, 0.773);
+        border-radius: 10px;
+        transition: 1s all;
+        position: relative;
+        -webkit-box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
+    }
+    .separacao_catalogo_cima {
+        width: 100%;
+        height: 70%;
+        display: flex;
+        flex-direction: row;
+    }
+    .separacao_catalogo_baixo {
+        width: 100%;
+        height: 30%;
+    }
+    .div_poster {
+        width: 30%;
+        height: 100%;
+    }
+    #posterImg {
+        background-size: contain;
+        max-width: 100%;
+        height: 100%;
+    }
+    .informacao_poster {
+        width: 100%;
+        height: 100%;
+        padding: 3%;
+        text-align: left;
+        color: white;
+    }
+    .informacao_filme {
+        width: 90%;
+        font-weight: 300;
+        text-align: justify;
+    }
+    .divLanguage {
+        position: absolute;
+       bottom: 21%;
+       left: 5%;
+       display: flex;
+       flex-direction: row;
+    }
+    .divDiretor {
+        position: absolute;
+        bottom: 9%;
+        left: 5%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+    }
+    .separacaoDiv {
+        padding: 0.8%;
+        border-radius: 0 0 2px 0;
+        border-bottom: 1px solid white;
+        color: white;
+        background-color: transparent;
+        display: flex;
+        margin-right: 2%;
+    }
+    .separacaoDiv:hover {
+        cursor: pointer;
+        background-color: white;
+        border: 0;
+        border-radius: 10px;
+        color: black;
+        transition: 1s all;
+    }
+    .divIndiTypes {
+        padding: 3%;
+        border-radius: 5px;
+        border: 1px solid white;
+        color: white;
+        margin-right: 10%;
+    }
+    .divIndiTypes:hover {
+        opacity: 0.8;
+        cursor: pointer;
+    }
+    .types_Genre {
+        display: flex;
+    }
+    
+    #spanDiretor {
+        font-weight: 200;
+        margin-left: 1%;
+        margin-top: 0.3%;
+    }
+    .divHora {
+        position: absolute;
+        right: 5%;
+        top: 60%;
+        font-size: 14px;
+        opacity: 0.6;
+    }
+    #btnSair {
+        background-color: transparent;
+        border: 0;
+        color: white;
+        font-size: 36px;
+        display: none;
+        position: absolute;
+        top: 10%;
+        left: 10%;
+    }
+    #btnSair:hover {
+        cursor: pointer;
+    }
+    .h1Error {
+        color:white;
+        font-size: 30px;
+        font-weight: 500;
+    }
+    .VoltarError {
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        border-bottom: 1px solid white;
+        width: 7%;
+    }
+</style>
+<body>
+    <div class="catalogo">
+        <button onclick="Sair()" id="btnSair">X</button>
+        <div class="div_separar">
+            <h2>CATALOGO DE FILMES</h2><br>
+        <input type="text" id="input_catalogo" placeholder="Pesquisar por filme"><br><br>
+        <button onclick="Buscar()">Pesquisar</button>
+    </div>
+    <div class="div_principal_catalogo">
+        <div class="separacao_catalogo_cima">
+            <div class="div_poster">
+            </div>
+            <div class="informacao_poster">
+                <h1 class="titulo"></h1><br>
+                <div class="types_Genre"></div><br>
+                <p class="informacao_filme"></p>
+                <div class="divLanguage"></div>
+                <div class="divDiretor">
+                    <h3 id="diretorH3">Diretor: </h3><span id="spanDiretor"></span>
+                </div>
+                <div class="divAno"></div>
+                <div class="divHora"></div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</body>
+<script>
+let key = '735ac510';
+let div_catalogo = document.querySelector('.div_principal_catalogo');
+let catalogo = document.querySelector('.catalogo');
+let divProcurar = document.querySelector('.div_separar');
+let divPoster = document.querySelector('.div_poster');
+let divTitulo = document.querySelector('.titulo');
+let divInformacao = document.querySelector('.informacao_filme');
+let divGenre = document.querySelector('.types_Genre');
+let divLanguage = document.querySelector('.divLanguage');
+let spanDiretor = document.querySelector('#spanDiretor');
+let divAno = document.querySelector('.divAno');
+let h3Diretor = document.querySelector('#diretorH3');
+let divHora = document.querySelector('.divHora');
+let diretores = [];
+
+let LimparElementos = () => {
+  divTitulo.innerHTML = '';
+  divHora.innerHTML = '';
+  divInformacao.innerHTML = '';
+  divPoster.innerHTML = '';
+  spanDiretor.innerHTML = '';
+  divAno.innerHTML = '';
+  divGenre.innerHTML = '';
+  divLanguage.innerHTML = '';
+};
+
+let Buscar = async () => {
+  let catalogo = input_catalogo.value;
+  diretores = [];
+  try {
+    LimparElementos();
+
+    let resposta = await fetch(`http://www.omdbapi.com/?t=${catalogo}&apikey=${key}`);
+    let item = await resposta.json();
+
+    if (item.Response === 'True') {
+        div_catalogo.style.display = 'flex';
+        divProcurar.style.display = 'none';
+        btnSair.style.display = 'flex';
+
+        let cartaz = item.Poster;
+        let titulo = item.Title;
+        let Runtime = item.Runtime;
+        let Genero = item.Genre.split(',');
+        let informacao = item.Plot;
+        let Language = item.Language.split(',');
+        let diretor = item.Director.split(',');
+        let ano = item.Released;
+
+        diretores.push(diretor);
+        SepararType(Genero);
+        SepararLing(Language);
+        SepararDiretor(diretores);
+
+        divTitulo.innerText = `${titulo}`;
+        divHora.innerText = `${Runtime}`;
+        divInformacao.innerText = `${informacao}`;
+        divPoster.innerHTML = `<img src="${cartaz}" alt="" id="posterImg">`;
+        spanDiretor.innerHTML = `${diretor}`;
+        divAno.innerHTML = `<br>${ano}`;
+    } else {
+      throw new Error('Filme não encontrado');
+    }
+  } catch (erro) {
+        div_catalogo.style.display = 'flex';
+        divProcurar.style.display = 'none';
+        btnSair.style.display = 'flex';
+        div_catalogo.innerHTML = `
+        <h1 class="h1Error">Não foi possível encontrar o filme :(</h2><br><br>
+        <h1 class="VoltarError" onclick="Sair()">Voltar</h1>`;
+        console.error('O erro é:', erro);
+  }
+};
+
+let SepararType = (genero) => {
+  divGenre.innerHTML = '';
+
+  for (let i = 0; i < genero.length; i++) {
+    let generoAtual = genero[i];
+
+    let divAtual = document.createElement('div');
+    divAtual.classList.add('separacaoDiv');
+    divAtual.innerHTML += `${generoAtual}`;
+    divGenre.appendChild(divAtual);
+  }
+};
+
+let SepararLing = (Language) => {
+  divLanguage.innerHTML = '';
+
+  for (let i = 0; i < Language.length; i++) {
+    let linguaAtual = Language[i];
+
+    let divAtualLingua = document.createElement('div');
+    divAtualLingua.classList.add('divIndiTypes');
+    divAtualLingua.innerHTML += `${linguaAtual}`;
+    divLanguage.appendChild(divAtualLingua);
+  }
+};
+
+let SepararDiretor = (diretor) => {
+  h3Diretor.innerHTML = diretor[0].length > 1 ? 'Diretores: ' : 'Diretor: ';
+};
+
+let Sair = () => {
+  document.location.href='Catalogo.html'
+};
+</script>
+</html>
